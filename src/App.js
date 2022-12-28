@@ -4,18 +4,21 @@ import SeacrhForm from "./components/SeacrhForm";
 import CustomCard from "./components/CustomCard";
 import MovieList from "./components/MovieList";
 import { useState } from "react";
+import { fetchMovieInfo } from "./helpers/axiosHelper";
 
 function App() {
-  const [searchMovies, setSearchMovies] = useState("");
-  const handleOnSubmit = (str) => {
-    setSearchMovies(str);
-    console.log(searchMovies);
+  const [movie, setMovie] = useState({});
+  const handleOnSubmit = async (str) => {
+    const result = await fetchMovieInfo(str);
+
+    setMovie(result);
   };
+
   return (
     <div className="wrapper">
       <Container>
         <SeacrhForm handleOnSubmit={handleOnSubmit}></SeacrhForm>
-        <CustomCard></CustomCard>
+        {movie.imdbID && <CustomCard movie={movie}></CustomCard>}
         <hr />
         <MovieList></MovieList>
       </Container>
